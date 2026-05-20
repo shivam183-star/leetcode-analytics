@@ -21,12 +21,19 @@ BASE_URL = "https://alfa-leetcode-api.onrender.com/{}"
 @app.get("/api/user/{username}")
 def get_user_data(username: str):
     try:
-        solved_resp = requests.get(BASE_URL.format(username) + "/solved", timeout=60)
-        lang_resp = requests.get(BASE_URL.format(username) + "/language", timeout=60)
-        cal_resp = requests.get(BASE_URL.format(username) + "/calendar", timeout=60)
+        # Add a User-Agent header as public APIs often block requests from serverless IPs without one
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            "Accept": "application/json"
+        }
+        
+        solved_resp = requests.get(BASE_URL.format(username) + "/solved", headers=headers, timeout=60)
+        lang_resp = requests.get(BASE_URL.format(username) + "/language", headers=headers, timeout=60)
+        cal_resp = requests.get(BASE_URL.format(username) + "/calendar", headers=headers, timeout=60)
         
         if solved_resp.status_code != 200 or lang_resp.status_code != 200 or cal_resp.status_code != 200:
-            raise HTTPException(status_code=500, detail="Failed to fetch data from LeetCode API")
+            error_msg = f"API Error: Solved({solved_resp.status_code}) Lang({lang_resp.status_code}) Cal({cal_resp.status_code})"
+            raise HTTPException(status_code=500, detail=f"Failed to fetch data from LeetCode API. {error_msg}")
 
         solved_data = solved_resp.json()
         lang_data = lang_resp.json()
