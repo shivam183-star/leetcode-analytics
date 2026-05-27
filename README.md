@@ -9,13 +9,11 @@ This project fetches real-time data from a public LeetCode API and presents it t
 ## 🚀 Live Demo
 
 🔗 **App URL:**  
-[Add Your Live App URL Here]
+https://leetcode-analytics.vercel.app/
 
 ---
 
 ## 📸 Screenshots
-
-*(You can place your new screenshots here)*
 
 ### 🏠 Dashboard Overview
 ![Dashboard Overview](screenshots/dashboard.png)
